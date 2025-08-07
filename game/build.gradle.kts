@@ -26,7 +26,14 @@ littleKt {
 }
 
 kotlin {
-    androidTarget()
+    jvmToolchain(17)
+    androidTarget {
+        compilations.all {
+            kotlinOptions {
+                jvmTarget = "17"
+            }
+        }
+    }
     jvm {
         compilations {
             val main by getting
@@ -67,7 +74,7 @@ kotlin {
             }
         }
         compilations.all {
-            kotlinOptions.jvmTarget = "11"
+            kotlinOptions.jvmTarget = "17"
         }
         testRuns["test"].executionTask.configure {
             useJUnit()
@@ -118,6 +125,7 @@ kotlin {
 }
 
 android {
+    namespace = "com.game.template"
     sourceSets["main"].apply {
         manifest.srcFile("src/androidMain/AndroidManifest.xml")
         assets.srcDirs("src/commonMain/resources")
@@ -127,6 +135,11 @@ android {
     defaultConfig {
         minSdk = (findProperty("android.minSdk") as String).toInt()
         targetSdk = (findProperty("android.targetSdk") as String).toInt()
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 }
 
